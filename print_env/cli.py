@@ -4,6 +4,7 @@ from . import load_default, load_file
 
 
 @click.command()
+@click.version_option()
 @click.argument('files', nargs=-1, type=click.Path(exists=True))
 def cli(files):
     env_vars = {}
