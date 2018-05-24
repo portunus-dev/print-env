@@ -27,6 +27,8 @@ def load_default():
     if env_file:
         return load_file(env_file)
 
+    return {}
+
 
 def load_file(fname):
     try:
