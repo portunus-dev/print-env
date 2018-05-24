@@ -15,6 +15,7 @@ click = "*"
 [dev-packages]
 
 "flake8" = "*"
+twine = "*"
 
 
 [requires]

@@ -17,9 +17,10 @@ def print_run(cmd):
     os.system(cmd)
 
 if sys.argv[-1] == 'publish':
+    print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable))
+    print_run('twine upload dist/*')
     print_run('git tag v{}'.format(version))
     print_run('git push --tags')
-    print_run('python setup.py sdist bdist_wheel upload')
     sys.exit()
 
 required = [
