@@ -18,7 +18,7 @@ def print_run(cmd):
 
 if sys.argv[-1] == 'publish':
     print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable))
-    print_run('twine upload dist/*')
+    print_run('env $(print-env) twine upload dist/*')
     print_run('git tag v{}'.format(version))
     print_run('git push --tags')
     sys.exit()
