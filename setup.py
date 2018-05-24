@@ -9,11 +9,17 @@ package = 'print_env'
 with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = '\n' + f.read()
 
-with codecs.open(os.path.join(here, package, '.version'), encoding='utf-8') as f:
+with codecs.open(os.path.join(here, package, '.ver'), encoding='utf-8') as f:
     version = f.read().strip()
 
+def print_run(cmd):
+    print('RUNNING: {}'.format(cmd))
+    os.system(cmd)
+
 if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist bdist_wheel upload')
+    print_run('git tag v{}'.format(version))
+    print_run('git push --tags')
+    print_run('python setup.py sdist bdist_wheel upload')
     sys.exit()
 
 required = [
@@ -38,7 +44,7 @@ setup(
         ]
     },
     package_data={
-        '': ['LICENSE', '{}/.version'.format(package)]
+        '': ['LICENSE', '{}/.ver'.format(package)]
     },
     license='MIT',
     classifiers=[
