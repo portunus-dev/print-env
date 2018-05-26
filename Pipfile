@@ -16,6 +16,8 @@ click = "*"
 
 "flake8" = "*"
 twine = "*"
+wheel = "*"
+setuptools = "*"
 
 
 [requires]
