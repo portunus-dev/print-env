@@ -2,6 +2,7 @@ import os
 import sys
 import codecs
 from setuptools import setup, find_packages
+from shutil import rmtree
 
 here = os.path.abspath(os.path.dirname(__file__))
 package = 'print_env'
@@ -20,6 +21,11 @@ def print_run(cmd, err_exit=False):
         sys.exit(r)
 
 if sys.argv[-1] == 'publish':
+    try:
+        rmtree(os.path.join(here, 'dist'))
+    except FileNotFoundError:
+        pass
+
     print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable), True)
     print_run('env $(print-env) twine upload dist/*', True)
     print_run('git tag v{}'.format(version['__version__']))
