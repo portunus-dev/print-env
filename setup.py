@@ -34,6 +34,7 @@ setup(
     name='print-env',
     version=version['__version__'],
     description='CLI to print environment variables from supported files.',
+    long_description_content_type='text/markdown',
     long_description=long_description,
     author='Runzhou Li (Leo)',
     author_email='me@runzhou.li',
