@@ -13,13 +13,15 @@ version = {}
 with codecs.open(os.path.join(here, package, 'version.py')) as f:
     exec(f.read(), version)
 
-def print_run(cmd):
+def print_run(cmd, err_exit=False):
     print('RUNNING: {}'.format(cmd))
-    os.system(cmd)
+    r = os.system(cmd)
+    if err_exit and r != 0:
+        sys.exit(r)
 
 if sys.argv[-1] == 'publish':
-    print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable))
-    print_run('env $(print-env) twine upload dist/*')
+    print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable), True)
+    print_run('env $(print-env) twine upload dist/*', True)
     print_run('git tag v{}'.format(version['__version__']))
     print_run('git push --tags')
     sys.exit()
@@ -34,8 +36,8 @@ setup(
     name='print-env',
     version=version['__version__'],
     description='CLI to print environment variables from supported files.',
-    long_description_content_type='text/markdown',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Runzhou Li (Leo)',
     author_email='me@runzhou.li',
     url='https://github.com/woozyking/print-env',
