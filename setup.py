@@ -6,11 +6,12 @@ from setuptools import setup, find_packages
 here = os.path.abspath(os.path.dirname(__file__))
 package = 'print_env'
 
-with codecs.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+with codecs.open(os.path.join(here, 'README.md')) as f:
     long_description = '\n' + f.read()
 
-with codecs.open(os.path.join(here, package, '.ver'), encoding='utf-8') as f:
-    version = f.read().strip()
+version = {}
+with codecs.open(os.path.join(here, package, 'version.py')) as f:
+    exec(f.read(), version)
 
 def print_run(cmd):
     print('RUNNING: {}'.format(cmd))
@@ -19,7 +20,7 @@ def print_run(cmd):
 if sys.argv[-1] == 'publish':
     print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable))
     print_run('env $(print-env) twine upload dist/*')
-    print_run('git tag v{}'.format(version))
+    print_run('git tag v{}'.format(version['__version__']))
     print_run('git push --tags')
     sys.exit()
 
@@ -31,7 +32,7 @@ required = [
 
 setup(
     name='print-env',
-    version=version,
+    version=version['__version__'],
     description='CLI to print environment variables from supported files.',
     long_description=long_description,
     author='Runzhou Li (Leo)',
@@ -45,7 +46,7 @@ setup(
         ]
     },
     package_data={
-        '': ['LICENSE', '{}/.ver'.format(package)]
+        '': ['LICENSE']
     },
     license='MIT',
     classifiers=[
