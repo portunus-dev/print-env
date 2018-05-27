@@ -27,7 +27,7 @@ if sys.argv[-1] == 'publish':
         pass
 
     print_run('{0} setup.py sdist bdist_wheel'.format(sys.executable), True)
-    print_run('env $(print-env) twine upload dist/*', True)
+    print_run('env $(print-env twine.env) twine upload dist/*', True)
     print_run('git tag v{}'.format(version['__version__']))
     print_run('git push --tags')
     sys.exit()

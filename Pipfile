@@ -18,6 +18,7 @@ click = "*"
 twine = "*"
 wheel = "*"
 setuptools = "*"
+pytest = "*"
 
 
 [requires]

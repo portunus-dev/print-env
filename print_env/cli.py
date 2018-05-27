@@ -1,6 +1,6 @@
 import click
 
-from . import load_default, load_file
+from .cli import load_default, load_file
 
 
 @click.command()
