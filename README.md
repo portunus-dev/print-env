@@ -1,6 +1,8 @@
 print-env
 ===
 
+[![Build Status](https://travis-ci.org/woozyking/print-env.svg?branch=master)](https://travis-ci.org/woozyking/print-env)
+
 CLI to print environment variables from supported files.
 
 This is derived from projects that:
