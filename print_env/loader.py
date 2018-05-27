@@ -16,7 +16,7 @@ from .exts import EXTS, is_yaml, is_json
 
 def load_default():
     for ext in EXTS:  # try yml, yaml, json first
-        env_file = os.path.join(os.getcwd(), 'env.{}'.format(ext))
+        env_file = os.path.join(os.getcwd(), 'env{}'.format(ext))
 
         if os.path.isfile(env_file):
             break

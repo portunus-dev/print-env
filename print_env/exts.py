@@ -1,4 +1,4 @@
-EXTS = ['env', 'yml', 'yaml', 'json', 'js']
+EXTS = ['.env', '.yml', '.yaml', '.json', '.js']
 
 
 def is_yaml(ext):
