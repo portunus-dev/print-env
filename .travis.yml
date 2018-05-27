@@ -1,0 +1,15 @@
+language: python
+python:
+  - "2.7"
+  - "3.6"
+  - "pypy2.7"
+  - "pypy3.5"
+# command to install dependencies
+before_install:
+  - pip install pipenv
+install:
+  - pipenv install
+# command to run tests
+script:
+  - flake8 print_env/
+  - py.test
