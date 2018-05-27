@@ -33,9 +33,9 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 required = [
-    'python-dotenv',
-    'pyyaml',
-    'click'
+    'python-dotenv>=0.8.2',
+    'pyyaml>=3.12',
+    'click>=6.7'
 ]
 
 setup(
@@ -65,6 +65,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
+        'Programming Language :: Python :: Implementation :: PyPy'
     ]
 )
