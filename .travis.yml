@@ -8,7 +8,7 @@ python:
 before_install:
   - pip install pipenv
 install:
-  - pipenv install
+  - pipenv install --dev
 # command to run tests
 script:
   - flake8 print_env/
