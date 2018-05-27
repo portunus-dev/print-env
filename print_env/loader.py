@@ -2,7 +2,7 @@ import os
 import codecs
 
 # dotenv loader
-from dotenv import dotenv_values, find_dotenv
+from dotenv import dotenv_values
 # yaml loader
 import yaml
 # json loader
@@ -15,18 +15,13 @@ from .exts import EXTS, is_yaml, is_json
 
 
 def load_default():
-    for ext in EXTS:  # try yml, yaml, json first
-        env_file = os.path.join(os.getcwd(), 'env{}'.format(ext))
+    for fname in ['.env'] + ['env{}'.format(ext) for ext in EXTS]:
+        env_file = os.path.join(os.getcwd(), fname)
 
         if os.path.isfile(env_file):
-            break
-    else:  # then resort to .env
-        env_file = find_dotenv()
-
-    if env_file:
-        return load_file(env_file)
-
-    return {}
+            return load_file(env_file)
+    else:
+        return {}
 
 
 def load_file(fname):
