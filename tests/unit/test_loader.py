@@ -4,6 +4,12 @@ import json
 
 from print_env.loader import load_default, load_file
 
+# patch to make FileNotFoundError "work" on Python 2.7
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
+
 
 FILES = ['.env', 'env.yml', 'env.json']
 TEMP_PRE = 'test_'
