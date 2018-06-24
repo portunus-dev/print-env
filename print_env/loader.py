@@ -11,13 +11,17 @@ try:
 except ImportError:
     import json
 
-from .exts import EXTS, is_yaml, is_json
+from .exts import (
+    get_defaults,
+    is_yaml,
+    is_json,
+)
 from .utils import secho
 
 
 def load_default(verbose=False):
     cwd = os.getcwd()
-    defaults = [ext if ext == '.env' else 'env{}'.format(ext) for ext in EXTS]
+    defaults = get_defaults()
 
     for fname in defaults:
         env_file = os.path.join(cwd, fname)
@@ -55,7 +59,7 @@ def load_file(fname, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg='Sourced from empty file {}'.format(fname),
+                    msg='Sourced from invalid file {}'.format(fname),
                     lvl='warning'
                 )
             else:
@@ -71,3 +75,10 @@ def load_file(fname, verbose=False):
             )
 
     return env_vars
+
+
+def load_system(verbose=False):
+    if verbose:
+        secho(msg='Sourced system environment variables')
+
+    return dict(os.environ)

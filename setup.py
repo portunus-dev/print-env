@@ -14,11 +14,13 @@ version = {}
 with codecs.open(os.path.join(here, package, 'version.py')) as f:
     exec(f.read(), version)
 
+
 def print_run(cmd, err_exit=False):
     print('RUNNING: {}'.format(cmd))
     r = os.system(cmd)
     if err_exit and r != 0:
         sys.exit(r)
+
 
 if sys.argv[-1] == 'publish':
     try:

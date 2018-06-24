@@ -1,3 +1,8 @@
+## v0.3.0
+
+- `-s, --system` option added. With it, system environment variables currently available to the user would be loaded before any local ones.
+- Verbose option now prints out fully resolved absolute path of given file(s).
+
 ## v0.2.0
 
 - `-v, --verbose` option added. With it, the command print some verbose outputs that doesn't interfere with stdout.

@@ -1,4 +1,15 @@
-from print_env.exts import is_yaml, is_json
+from print_env.exts import (
+    EXTS,
+    get_defaults,
+    is_yaml,
+    is_json,
+)
+
+
+def test_get_defaults():
+    defaults = get_defaults()
+    for f in defaults:
+        assert f.endswith(tuple(EXTS))
 
 
 def test_is_yaml():
