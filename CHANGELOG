@@ -1,3 +1,7 @@
+## v0.3.1
+
+- Update underlying dependencies.
+
 ## v0.3.0
 
 - `-s, --system` option added. With it, system environment variables currently available to the user would be loaded before any local ones.
