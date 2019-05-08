@@ -10,7 +10,7 @@ python:
   - "pypy3.5"
 # command to install dependencies
 before_install:
-  - pip install pipenv flake8
+  - pip install -U pip pipenv
 install:
   - pipenv install --dev
 # command to run tests
