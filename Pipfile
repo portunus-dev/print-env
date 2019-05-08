@@ -1,27 +1,21 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 python-dotenv = "*"
 pyyaml = "*"
 click = "*"
 colorama = "*"
 
-
 [dev-packages]
-
 "flake8" = "*"
 twine = "*"
 wheel = "*"
 setuptools = "*"
 pytest = "*"
-
+autopep8 = "*"
 
 [requires]
-
-python_version = "3.6"
+python_version = "3.7"

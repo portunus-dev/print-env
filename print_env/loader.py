@@ -52,7 +52,7 @@ def load_file(fname, verbose=False):
         else:
             with codecs.open(fname) as f:
                 if is_yaml(ext):
-                    env_vars = yaml.load(f)
+                    env_vars = yaml.load(f, Loader=yaml.FullLoader)
                 elif is_json(ext):
                     env_vars = json.load(f)
 
