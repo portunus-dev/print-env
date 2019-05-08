@@ -7,7 +7,7 @@ python:
   - "3.6"
   - "3.7"
   # - "pypy2.7"
-  - "pypy3.5"
+  # - "pypy3.5" # incompat with pipenv atm
 # command to install dependencies
 before_install:
   - pip install -U pip pipenv
