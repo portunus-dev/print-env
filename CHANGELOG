@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add `-c, --csv` option to print out environment variable pairs as comma instead of space separated values.
+
 ## v1.0.0
 
 - Update underlying dependencies, noticeably major version bump for `pyyaml` which now features a more explicit way to specify a non-unsafeloader (hence the major version bump for `print-env` itself)
