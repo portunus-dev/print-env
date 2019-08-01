@@ -5,6 +5,10 @@ import codecs
 from dotenv import dotenv_values
 # yaml loader
 import yaml
+try:
+    from yaml import CLoader as YLoader
+except ImportError:
+    from yaml import Loader as YLoader
 # json loader
 try:
     import simplejson as json
@@ -52,7 +56,7 @@ def load_file(fname, verbose=False):
         else:
             with codecs.open(fname) as f:
                 if is_yaml(ext):
-                    env_vars = yaml.load(f, Loader=yaml.FullLoader)
+                    env_vars = yaml.load(f, Loader=YLoader)
                 elif is_json(ext):
                     env_vars = json.load(f)
 
