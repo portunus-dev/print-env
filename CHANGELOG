@@ -1,8 +1,9 @@
-## Unreleased
+## v2.0.0
 
+- *BREAKING* Drop support for Python 2.7 and 3.4, now requires Python 3.5 or higher.
 - Add `-c, --csv` option to print out environment variable pairs as comma instead of space separated values.
-- Drop support for Python 2.7 and 3.4.
 - Potential performance gain by trying to use PyYAML CLoader.
+
 
 ## v1.0.0
 
