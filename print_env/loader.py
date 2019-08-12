@@ -14,6 +14,8 @@ try:
     import simplejson as json
 except ImportError:
     import json
+# API loader - requests
+import requests
 
 from .exts import (
     get_defaults,
@@ -83,6 +85,52 @@ def load_file(fname, verbose=False):
 
 def load_system(verbose=False):
     if verbose:
-        secho(msg='Sourced system environment variables')
+        secho(msg='Sourced system environment variables', lvl='debug')
 
     return dict(os.environ)
+
+
+def load_api(api, token, verbose=False):
+    env_vars = {}
+
+    try:
+        jwt, project_id, stage = token.split('/')
+    except ValueError:
+        if verbose:
+            secho(msg='Invalid token', lvl='error')
+
+        return env_vars
+
+    r = requests.get(api, params={'project_id': project_id, 'stage': stage})
+
+    if r.status_code != 200:
+        if verbose:
+            try:
+                err = r.json()
+                err = err.get('message', err)
+            except Exception:
+                err = r.text
+
+            secho(msg=f'API error - {err}', lvl='error')
+
+        return env_vars
+
+    try:
+        data = r.json()
+        env_vars = data.get('vars', {})
+
+        if verbose:
+            if not env_vars:
+                secho(
+                    msg=f'Sourced from invalid API {api}',
+                    lvl='warning'
+                )
+            else:
+                secho(msg=f'Sourced from API {api}', lvl='debug')
+    except Exception as e:
+        if verbose:
+            secho(msg=f'API error - {e}', lvl='error')
+
+        env_vars = {}
+
+    return env_vars

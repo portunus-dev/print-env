@@ -17,3 +17,4 @@ install:
 script:
   - flake8 print_env/
   - pytest
+  - pip install -e .

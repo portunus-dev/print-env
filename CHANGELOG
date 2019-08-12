@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Add `-j, --json` option to print out environment variable pairs as JSON string.
+- Add external API sourced environment variables, with relevant options `-t, --token` and `--api`.
 
 ## v2.0.0
 

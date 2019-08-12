@@ -9,11 +9,20 @@ from .loader import (
     load_default,
     load_file,
     load_system,
+    load_api,
 )
 
 
 @click.command()
 @click.version_option()
+@click.option(
+    '--api',
+    help='Endpoint for API sourced environment varialbes.')
+@click.option(
+    '-t',
+    '--token',
+    is_flag=False,
+    help='Token for API sourced environment variables before others.')
 @click.option(
     '-s',
     '--system',
@@ -38,9 +47,12 @@ from .loader import (
     'files',
     nargs=-1,
     type=click.Path(exists=True, dir_okay=False, resolve_path=True))
-def cli(system, verbose, csv, json, files):
+def cli(api, token, system, verbose, csv, json, files):
     delimiter = ',' if csv else ' '
     env_vars = {}
+
+    if api and token:
+        env_vars.update(load_api(api, token, verbose))
 
     if system:
         env_vars.update(load_system(verbose))

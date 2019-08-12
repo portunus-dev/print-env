@@ -7,6 +7,7 @@ name = "pypi"
 python-dotenv = "*"
 pyyaml = "*"
 click = "*"
+requests = "*"
 
 [dev-packages]
 "flake8" = "*"
