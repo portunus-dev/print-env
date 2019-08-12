@@ -14,6 +14,10 @@ try:
     import simplejson as json
 except ImportError:
     import json
+# API loader - requests
+import requests
+# GnuPG for decrypting encrypted API loaded env vars
+import gnupg
 
 from .exts import (
     get_defaults,
@@ -86,3 +90,54 @@ def load_system(verbose=False):
         secho(msg='Sourced system environment variables')
 
     return dict(os.environ)
+
+
+def load_api(api, token, verbose=False):
+    env_vars = {}
+
+    try:
+        jwt, project_id, stage = token.split('/')
+    except ValueError:
+        if verbose:
+            secho(msg='Invalid token', lvl='error')
+
+        return env_vars
+
+    r = requests.get(api, params={'project_id': project_id, 'stage': stage})
+
+    if r.status_code != 200:
+        if verbose:
+            try:
+                err = r.json()
+                err = err.get('message', err)
+            except Exception:
+                err = r.text
+
+            secho(msg=f'API error - {err}', lvl='error')
+
+        return env_vars
+
+    try:
+        data = r.json()
+        encrypted = data.get('encrypted', False)
+        env_vars = data.get('vars', {})
+
+        if encrypted:
+            gpg = gnupg.GPG()
+            env_vars = json.loads(str(gpg.decrypt(env_vars)))
+
+        if verbose:
+            if not env_vars:
+                secho(
+                    msg=f'Sourced from invalid API {api}',
+                    lvl='warning'
+                )
+            else:
+                secho(msg=f'Sourced from API {api}', lvl='debug')
+    except Exception as e:
+        if verbose:
+            secho(msg=f'API error - {e}', lvl='error')
+
+        env_vars = {}
+
+    return env_vars
