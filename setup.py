@@ -39,6 +39,7 @@ required = [
     'pyyaml>=3.12',
     'click>=6.7',
     'requests>=2.0',
+    'python-gnupg>=0.4',
 ]
 
 setup(

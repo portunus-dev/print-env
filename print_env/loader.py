@@ -16,6 +16,8 @@ except ImportError:
     import json
 # API loader - requests
 import requests
+# GnuPG for decrypting encrypted API loaded env vars
+import gnupg
 
 from .exts import (
     get_defaults,
@@ -117,7 +119,12 @@ def load_api(api, token, verbose=False):
 
     try:
         data = r.json()
+        encrypted = data.get('encrypted', False)
         env_vars = data.get('vars', {})
+
+        if encrypted:
+            gpg = gnupg.GPG()
+            env_vars = json.loads(str(gpg.decrypt(env_vars)))
 
         if verbose:
             if not env_vars:

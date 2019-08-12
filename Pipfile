@@ -8,6 +8,7 @@ python-dotenv = "*"
 pyyaml = "*"
 click = "*"
 requests = "*"
+python-gnupg = "*"
 
 [dev-packages]
 "flake8" = "*"
