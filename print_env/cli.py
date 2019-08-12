@@ -1,3 +1,8 @@
+try:
+    from simplejson import dumps
+except ImportError:
+    from json import dumps
+
 import click
 
 from .loader import (
@@ -24,11 +29,16 @@ from .loader import (
     '--csv',
     is_flag=True,
     help='Comma instead of space separated KEY=VALUE pairs.')
+@click.option(
+    '-j',
+    '--json',
+    is_flag=True,
+    help='Output in JSON string.')
 @click.argument(
     'files',
     nargs=-1,
     type=click.Path(exists=True, dir_okay=False, resolve_path=True))
-def cli(system, verbose, csv, files):
+def cli(system, verbose, csv, json, files):
     delimiter = ',' if csv else ' '
     env_vars = {}
 
@@ -42,6 +52,9 @@ def cli(system, verbose, csv, files):
             env_vars.update(load_file(fname, verbose))
 
     if env_vars:
-        click.echo(delimiter.join([
+        if json:
+            return click.echo(dumps(env_vars))
+
+        return click.echo(delimiter.join([
             '{0}={1}'.format(k, v) for k, v in env_vars.items()
         ]))
