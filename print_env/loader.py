@@ -113,7 +113,7 @@ def load_api(api, token, verbose=False):
             except Exception:
                 err = r.text
 
-            secho(msg=f'API error - {err}', lvl='error')
+            secho(msg='API error - {}'.format(err), lvl='error')
 
         return env_vars
 
@@ -129,14 +129,14 @@ def load_api(api, token, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg=f'Sourced from invalid API {api}',
+                    msg='Sourced from invalid API {}'.format(api),
                     lvl='warning'
                 )
             else:
-                secho(msg=f'Sourced from API {api}', lvl='debug')
+                secho(msg='Sourced from API {}'.format(api), lvl='debug')
     except Exception as e:
         if verbose:
-            secho(msg=f'API error - {e}', lvl='error')
+            secho(msg='API error - {}'.format(e), lvl='error')
 
         env_vars = {}
 
