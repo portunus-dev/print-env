@@ -17,6 +17,7 @@ from .loader import (
 @click.version_option()
 @click.option(
     '--api',
+    is_flag=False,
     help='Endpoint for API sourced environment varialbes.')
 @click.option(
     '-t',
