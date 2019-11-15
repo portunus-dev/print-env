@@ -67,19 +67,25 @@ def load_file(fname, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg='Sourced from invalid file {}'.format(fname),
-                    lvl='warning'
+                    msg='Invalid file {}'.format(fname),
+                    lvl='warning',
+                    loader='file'
                 )
             else:
-                secho(msg='Sourced from file {}'.format(fname), lvl='debug')
+                secho(
+                    msg='From file {}'.format(fname),
+                    lvl='debug',
+                    loader='file'
+                )
     except Exception as e:
         if verbose:
             secho(
-                msg='Failed to load file {f}\n{e}'.format(
+                msg='Failed to load {f}\n{e}'.format(
                     f=fname,
                     e=e
                 ),
-                lvl='error'
+                lvl='error',
+                loader='file'
             )
 
     return env_vars
@@ -87,7 +93,11 @@ def load_file(fname, verbose=False):
 
 def load_system(verbose=False):
     if verbose:
-        secho(msg='Sourced system environment variables')
+        secho(
+            msg='From system environment variables',
+            lvl='debug',
+            loader='system'
+        )
 
     return dict(os.environ)
 
@@ -99,11 +109,12 @@ def load_api(api, token, verbose=False):
         jwt, project_id, stage = token.split('/')
     except ValueError:
         if verbose:
-            secho(msg='Invalid token', lvl='error')
+            secho(msg='Invalid token', lvl='error', loader='API')
 
         return env_vars
 
-    r = requests.get(api, params={'project_id': project_id, 'stage': stage})
+    params = {'project_id': project_id, 'stage': stage, 'encrypt': 1}
+    r = requests.get(api, params=params, headers={'portunus-jwt': jwt})
 
     if r.status_code != 200:
         if verbose:
@@ -113,7 +124,7 @@ def load_api(api, token, verbose=False):
             except Exception:
                 err = r.text
 
-            secho(msg='API error - {}'.format(err), lvl='error')
+            secho(msg='API error - {}'.format(err), lvl='error', loader='API')
 
         return env_vars
 
@@ -129,14 +140,19 @@ def load_api(api, token, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg='Sourced from invalid API {}'.format(api),
-                    lvl='warning'
+                    msg='No vars loaded from API {}'.format(api),
+                    lvl='warning',
+                    loader='API'
                 )
             else:
-                secho(msg='Sourced from API {}'.format(api), lvl='debug')
+                secho(
+                    msg='From API {} (Encrypted: {})'.format(api, encrypted),
+                    lvl='debug',
+                    loader='API'
+                )
     except Exception as e:
         if verbose:
-            secho(msg='API error - {}'.format(e), lvl='error')
+            secho(msg='API error - {}'.format(e), lvl='error', loader='API')
 
         env_vars = {}
 

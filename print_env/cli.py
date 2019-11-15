@@ -15,6 +15,15 @@ from .loader import (
 @click.command()
 @click.version_option()
 @click.option(
+    '--api',
+    is_flag=False,
+    help='Endpoint for API sourced environment varialbes.')
+@click.option(
+    '-t',
+    '--token',
+    is_flag=False,
+    help='Token for API sourced environment variables before others.')
+@click.option(
     '-s',
     '--system',
     is_flag=True,
