@@ -66,10 +66,12 @@ def cli(api, token, no_default, system, verbose, csv, json, files):
         for fname in files:
             env_vars.update(load_file(fname, verbose))
 
-    if env_vars.get('PORTUNUS_TOKEN'):
-        env_vars.update(
-            load_api(api, env_vars.get('PORTUNUS_TOKEN'), verbose))
-        env_vars.pop('PORTUNUS_TOKEN')
+    _token = env_vars.pop('PORTUNUS_TOKEN', None)
+    if _token:
+        copy = env_vars.copy()
+        env_vars.update(load_api(api, _token, verbose))
+        # TODO: let user control the precedence of these env vars
+        env_vars.update(copy)
 
     if env_vars:
         if json:
