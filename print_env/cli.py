@@ -17,6 +17,7 @@ from .loader import (
 @click.option(
     '--api',
     is_flag=False,
+    default='https://cli.mindswire.com',
     help='Endpoint for API sourced environment varialbes.')
 @click.option(
     '-t',

@@ -140,13 +140,14 @@ def load_api(api, token, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg='No vars loaded from API {}'.format(api),
+                    msg=f'No vars loaded for project {project_id} ({stage})',
                     lvl='warning',
                     loader='API'
                 )
             else:
                 secho(
-                    msg='From API {} (Encrypted: {})'.format(api, encrypted),
+                    msg='Project {} (Stage: {}, Encrypted: {})'.format(
+                        project_id, stage, encrypted),
                     lvl='debug',
                     loader='API'
                 )
