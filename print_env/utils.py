@@ -15,7 +15,7 @@ def secho(**kwargs):
 
     if msg:
         echo(
-            '[{lvl}]\t[{loader}]\t{msg}'.format(
+            '[{lvl}][{loader}]\t{msg}'.format(
                 lvl=lvl.upper(), loader=loader.upper(), msg=msg
             ),
             fg=COLOR_MAP.get(lvl.lower(), 'cyan'),

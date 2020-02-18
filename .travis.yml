@@ -6,6 +6,7 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
   # - "pypy2.7"
   # - "pypy3.5" # incompat with pipenv atm
 # command to install dependencies
