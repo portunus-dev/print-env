@@ -113,7 +113,7 @@ def load_api(api, token, verbose=False):
 
         return env_vars
 
-    params = {'project_id': project_id, 'stage': stage, 'encrypt': 1}
+    params = {'project_id': project_id, 'stage': stage, 'encrypt': 0}
     r = requests.get(api, params=params, headers={'portunus-jwt': jwt})
 
     if r.status_code != 200:

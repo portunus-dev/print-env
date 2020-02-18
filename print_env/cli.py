@@ -24,6 +24,10 @@ from .loader import (
     is_flag=False,
     help='Token for API sourced environment variables before others.')
 @click.option(
+    '--no_default',
+    is_flag=True,
+    help='Do not load from default local file(s).')
+@click.option(
     '-s',
     '--system',
     is_flag=True,
@@ -47,7 +51,7 @@ from .loader import (
     'files',
     nargs=-1,
     type=click.Path(exists=True, dir_okay=False, resolve_path=True))
-def cli(system, verbose, csv, json, files):
+def cli(api, token, no_default, system, verbose, csv, json, files):
     delimiter = ',' if csv else ' '
     env_vars = {}
 
@@ -55,7 +59,8 @@ def cli(system, verbose, csv, json, files):
         env_vars.update(load_system(verbose))
 
     if not len(files):
-        env_vars.update(load_default(verbose))
+        if not no_default:
+            env_vars.update(load_default(verbose))
     else:
         for fname in files:
             env_vars.update(load_file(fname, verbose))

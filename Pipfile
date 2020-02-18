@@ -17,6 +17,7 @@ wheel = "*"
 setuptools = "*"
 pytest = "*"
 autopep8 = "*"
+print-env = {editable = true,path = "."}
 
 [requires]
 python_version = "3.7"
