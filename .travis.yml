@@ -12,5 +12,5 @@ install:
 # command to run tests
 script:
   - flake8 print_env/
-  - pytest
+  - pytest --cov=print_env tests
   - pip install -e .
