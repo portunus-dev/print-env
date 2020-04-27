@@ -16,6 +16,7 @@ twine = "*"
 wheel = "*"
 setuptools = "*"
 pytest = "*"
+pytest-cov = "*"
 autopep8 = "*"
 print-env = {editable = true,path = "."}
 
