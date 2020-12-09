@@ -1,3 +1,5 @@
+import os
+
 try:
     from simplejson import dumps
 except ImportError:
@@ -70,8 +72,8 @@ def cli(api, token, no_default, system, verbose, csv, json, files):
         for fname in files:
             env_vars.update(load_file(fname, verbose))
 
-    _token = env_vars.pop('PORTUNUS_TOKEN', None)
-    if _token:
+    _token = env_vars.pop('PORTUNUS_TOKEN', os.getenv('PORTUNUS_TOKEN'))
+    if not token and _token:
         copy = env_vars.copy()
         env_vars.update(load_api(api, _token, verbose))
         # TODO: let user control the precedence of these env vars
