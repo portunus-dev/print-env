@@ -18,7 +18,7 @@ setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
 autopep8 = "*"
-print-env = {editable = true,path = "."}
+pipenv-setup = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
