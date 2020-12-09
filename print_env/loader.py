@@ -19,12 +19,12 @@ import requests
 # GnuPG for decrypting encrypted API loaded env vars
 import gnupg
 
-from .exts import (
+from print_env.exts import (
     get_defaults,
     is_yaml,
     is_json,
 )
-from .utils import secho
+from print_env.utils import secho
 
 
 def load_default(verbose=False):
@@ -104,16 +104,15 @@ def load_system(verbose=False):
 
 def load_api(api, token, verbose=False):
     env_vars = {}
-
     try:
-        jwt, project_id, stage = token.split('/')
+        jwt, project, stage = token.split('/')
     except ValueError:
         if verbose:
             secho(msg='Invalid token', lvl='error', loader='API')
 
         return env_vars
 
-    params = {'project_id': project_id, 'stage': stage, 'encrypt': 0}
+    params = dict(project=project, stage=stage, encrypt=0)
     r = requests.get(api, params=params, headers={'portunus-jwt': jwt})
 
     if r.status_code != 200:
@@ -140,14 +139,14 @@ def load_api(api, token, verbose=False):
         if verbose:
             if not env_vars:
                 secho(
-                    msg=f'No vars loaded for project {project_id} ({stage})',
+                    msg=f'No vars loaded for project {project} ({stage})',
                     lvl='warning',
                     loader='API'
                 )
             else:
                 secho(
                     msg='Project {} (Stage: {}, Encrypted: {})'.format(
-                        project_id, stage, encrypted),
+                        project, stage, encrypted),
                     lvl='debug',
                     loader='API'
                 )
