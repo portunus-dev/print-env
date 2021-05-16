@@ -32,3 +32,4 @@ jobs:
       - run: flake8 print_env/
       - run: pytest --cov=print_env tests
       - run: pip install -e .
+      - run: print-env --version

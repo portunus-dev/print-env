@@ -4,11 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-dotenv = "*"
-pyyaml = "*"
-click = "*"
-requests = "*"
-python-gnupg = "*"
+print-env = {editable = true, path = "."}
 
 [dev-packages]
 "flake8" = "*"
@@ -18,7 +14,6 @@ setuptools = "*"
 pytest = "*"
 pytest-cov = "*"
 autopep8 = "*"
-pipenv-setup = "*"
 
 [requires]
 python_version = "3.8"
