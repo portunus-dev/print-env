@@ -1,5 +1,7 @@
 import os
 import codecs
+# json loader
+import json
 
 # dotenv loader
 from dotenv import dotenv_values
@@ -9,11 +11,6 @@ try:
     from yaml import CLoader as YLoader
 except ImportError:
     from yaml import Loader as YLoader
-# json loader
-try:
-    import simplejson as json
-except ImportError:
-    import json
 # API loader - requests
 import requests
 # GnuPG for decrypting encrypted API loaded env vars

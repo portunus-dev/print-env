@@ -1,9 +1,5 @@
 import os
-
-try:
-    from simplejson import dumps
-except ImportError:
-    from json import dumps
+from json import dumps
 
 import click
 
@@ -11,6 +7,7 @@ from .loader import (
     load_default,
     load_file,
     load_system,
+    load_api,
 )
 
 
