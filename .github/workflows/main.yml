@@ -30,7 +30,7 @@ jobs:
 
       - run: python -m pip install --upgrade pip setuptools pipenv
 
-      - run: pipenv install -d
+      - run: pipenv install --dev
       - run: flake8 print_env/
       - run: pytest --cov=print_env tests
       - run: pip install -e .

@@ -1,7 +1,7 @@
 print-env
 ===
 
-[![Build Status](https://travis-ci.org/woozyking/print-env.svg?branch=master)](https://travis-ci.org/woozyking/print-env)
+[![Default branch checks](https://github.com/woozyking/print-env/actions/workflows/main.yml/badge.svg)](https://github.com/woozyking/print-env/actions/workflows/main.yml)
 [![PyPI version](https://badge.fury.io/py/print-env.svg)](https://pypi.org/project/print-env)
 
 CLI to print environment variables from supported sources.
