@@ -46,8 +46,8 @@ setup(
     packages=find_packages(exclude=["tests"]),
     install_requires=[
         "click>=7,<8",
-        "python-dotenv==0.17.1",
-        "python-gnupg==0.4.7",
+        "python-dotenv==0.19.2",
+        "python-gnupg==0.4.8",
         "pyyaml>=5,<6",
         "requests>=2,<3",
     ],
