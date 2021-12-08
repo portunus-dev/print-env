@@ -38,11 +38,18 @@ from .loader import (
     is_flag=True,
     help='Enables verbose mode.')
 @click.option(
+    '-f',
+    '--format',
+    is_flag=False,
+    type=click.Choice(['space', 'csv', 'newline', 'json']),
+    default='space',
+    help='Output format.')
+@click.option(  # deprecated, use --format
     '-c',
     '--csv',
     is_flag=True,
     help='Comma instead of space separated KEY=VALUE pairs.')
-@click.option(
+@click.option(  # deprecated, use --format
     '-j',
     '--json',
     is_flag=True,
@@ -51,8 +58,7 @@ from .loader import (
     'files',
     nargs=-1,
     type=click.Path(exists=True, dir_okay=False, resolve_path=True))
-def cli(api, token, no_default, system, verbose, csv, json, files):
-    delimiter = ',' if csv else ' '
+def cli(api, token, no_default, system, verbose, format, csv, json, files):
     env_vars = {}
 
     if system:
@@ -73,8 +79,14 @@ def cli(api, token, no_default, system, verbose, csv, json, files):
         env_vars.update(copy)
 
     if env_vars:
-        if json:
+        if json or format == 'json':
             return click.echo(dumps(env_vars))
+
+        delimiter = ' '
+        if csv or format == 'csv':
+            delimiter = ','
+        elif format == 'newline':
+            delimiter = '\n'
 
         return click.echo(delimiter.join([
             '{0}={1}'.format(k, v) for k, v in env_vars.items()
