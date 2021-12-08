@@ -48,12 +48,12 @@ from .loader import (
     '-c',
     '--csv',
     is_flag=True,
-    help='Comma instead of space separated KEY=VALUE pairs.')
+    help='Comma instead of space separated KEY=VALUE pairs. DEPRECIATED, use --format csv.')
 @click.option(  # deprecated, use --format
     '-j',
     '--json',
     is_flag=True,
-    help='Output in JSON string.')
+    help='Output in JSON string. DEPRECATED, use --format=json.')
 @click.argument(
     'files',
     nargs=-1,
