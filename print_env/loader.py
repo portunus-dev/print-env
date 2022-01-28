@@ -2,6 +2,7 @@ import os
 import codecs
 # json loader
 import json
+from xmlrpc.client import Boolean
 
 # dotenv loader
 from dotenv import dotenv_values
@@ -46,7 +47,7 @@ def load_default(verbose=False):
         return {}
 
 
-def load_file(fname, verbose=False):
+def load_file(fname, verbose=False) -> dict:
     env_vars = {}
 
     try:
@@ -99,13 +100,26 @@ def load_system(verbose=False):
     return dict(os.environ)
 
 
-def load_api(api, token, verbose=False):
+def load_api(api: str, token: str, stage: str = None, verbose: Boolean = False) -> dict:
     env_vars = {}
     try:
-        jwt, project, stage = token.split('/')
+        token_parts = token.split('/')
+        jwt = token_parts[0]
+        project = token_parts[1]
+        _stage = None
+        if len(token_parts) == 3 and token_parts[2]:
+            _stage = token_parts[2]
     except ValueError:
         if verbose:
             secho(msg='Invalid token', lvl='error', loader='API')
+
+        return env_vars
+
+    stage = stage or _stage
+
+    if not stage:
+        if verbose:
+            secho(msg='No stage specified', lvl='error', loader='API')
 
         return env_vars
 
