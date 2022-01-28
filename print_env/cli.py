@@ -24,6 +24,19 @@ from .loader import (
     is_flag=False,
     help='Token for API sourced environment variables before others.')
 @click.option(
+    '--team',
+    is_flag=False,
+    help='Team for API sourced environment variables.')
+@click.option(
+    '--project',
+    is_flag=False,
+    help='Project for API sourced environment variables.')
+@click.option(
+    '--stage',
+    is_flag=False,
+    default=None,
+    help='Stage for API sourced environment variables.')
+@click.option(
     '--no_default',
     is_flag=True,
     help='Do not load from default local file(s).')
@@ -58,7 +71,7 @@ from .loader import (
     'files',
     nargs=-1,
     type=click.Path(exists=True, dir_okay=False, resolve_path=True))
-def cli(api, token, no_default, system, verbose, format, csv, json, files):
+def cli(api, token, team, project, stage, no_default, system, verbose, format, csv, json, files):
     env_vars = {}
 
     if system:
@@ -71,10 +84,18 @@ def cli(api, token, no_default, system, verbose, format, csv, json, files):
         for fname in files:
             env_vars.update(load_file(fname, verbose))
 
-    _token = env_vars.pop('PORTUNUS_TOKEN', os.getenv('PORTUNUS_TOKEN'))
-    if not token and _token:
+    token = token or env_vars.pop('PORTUNUS_TOKEN', os.getenv('PORTUNUS_TOKEN'))
+    if not token:
         copy = env_vars.copy()
-        env_vars.update(load_api(api, _token, verbose))
+        api_envs = load_api(
+            api=api,
+            team=team,
+            project=project,
+            token=token,
+            stage=stage,
+            verbose=verbose,
+        )
+        env_vars.update(api_envs)
         # TODO: let user control the precedence of these env vars
         env_vars.update(copy)
 
