@@ -101,15 +101,23 @@ def load_system(verbose=False):
 
 def load_api(api, token, verbose=False):
     env_vars = {}
+    team = False
     try:
-        jwt, project, stage = token.split('/')
+        split = token.split('/')
+        if len(split) == 4:
+            jwt, team, project, stage = split
+        else:
+            jwt, project, stage = split
     except ValueError:
         if verbose:
             secho(msg='Invalid token', lvl='error', loader='API')
-
         return env_vars
 
-    params = dict(project=project, stage=stage, encrypt=0)
+    if team:
+        params = dict(team=team, project=project, stage=stage, encrypt=0)
+    else:
+        params = dict(project=project, stage=stage, encrypt=0)
+
     r = requests.get(api, params=params, headers={'portunus-jwt': jwt})
 
     if r.status_code != 200:
