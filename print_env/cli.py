@@ -85,7 +85,7 @@ def cli(api, token, team, project, stage, no_default, system, verbose, format, c
             env_vars.update(load_file(fname, verbose))
 
     token = token or env_vars.pop('PORTUNUS_TOKEN', os.getenv('PORTUNUS_TOKEN'))
-    if not token:
+    if token:
         copy = env_vars.copy()
         api_envs = load_api(
             api=api,

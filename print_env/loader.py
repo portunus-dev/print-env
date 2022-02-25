@@ -114,13 +114,12 @@ def load_api(api: str, token: str, team: str = None, project: str = None, stage:
             secho(msg='Invalid token', lvl='error', loader='API')
         return env_vars
 
-    params = dict(encrypted=0)
-    if team and project and stage:  # if all 3 are passed as args (such as thru CLI --team, --project, --stage)
-        params.update(dict(team=team, project=project, stage=stage))
-    else:  # otherwise fallback to the token parts
-        params.update(dict(project=_project, stage=_stage))
-        if _team:
-            params['team'] = _team
+    project = project or _project
+    stage = stage or _stage
+    params = dict(encrypted=0, project=project, stage=stage)
+    team = team or _team
+    if team:
+        params['team'] = team
 
     # check for bare minimum req query params for portunus API
     if not params.get('project') or not params.get('stage'):
@@ -153,19 +152,14 @@ def load_api(api: str, token: str, team: str = None, project: str = None, stage:
             env_vars = json.loads(str(gpg.decrypt(env_vars)))
 
         if verbose:
+            msg = f'project={project}, stage={stage} (encrypted={encrypted})'
+            if team:
+                msg = f'team={team}, {msg}'
+
             if not env_vars:
-                secho(
-                    msg=f'No vars loaded for project {project} ({stage})',
-                    lvl='warning',
-                    loader='API'
-                )
-            else:
-                secho(
-                    msg='Project {} (Stage: {}, Encrypted: {})'.format(
-                        project, stage, encrypted),
-                    lvl='debug',
-                    loader='API'
-                )
+                msg = f'No vars found for {msg}'
+
+            secho(msg=msg, lvl='debug', loader='API')
     except Exception as e:
         if verbose:
             secho(msg='API error - {}'.format(e), lvl='error', loader='API')
