@@ -2,6 +2,7 @@ import os
 import codecs
 # json loader
 import json
+from xmlrpc.client import Boolean
 
 # dotenv loader
 from dotenv import dotenv_values
@@ -46,7 +47,7 @@ def load_default(verbose=False):
         return {}
 
 
-def load_file(fname, verbose=False):
+def load_file(fname, verbose=False) -> dict:
     env_vars = {}
 
     try:
@@ -99,28 +100,37 @@ def load_system(verbose=False):
     return dict(os.environ)
 
 
-def load_api(api, token, verbose=False):
+def load_api(api: str, token: str, team: str = None, project: str = None, stage: str = None, verbose: Boolean = False) -> dict:
     env_vars = {}
-    team = False
+    _team = None
     try:
         split = token.split('/')
         if len(split) == 4:
-            jwt, team, project, stage = split
+            jwt, _team, _project, _stage = split
         else:
-            jwt, project, stage = split
+            jwt, _project, _stage = split
     except ValueError:
         if verbose:
             secho(msg='Invalid token', lvl='error', loader='API')
         return env_vars
 
+    project = project or _project
+    stage = stage or _stage
+    params = dict(encrypted=0, project=project, stage=stage)
+    team = team or _team
     if team:
-        params = dict(team=team, project=project, stage=stage, encrypt=0)
-    else:
-        params = dict(project=project, stage=stage, encrypt=0)
+        params['team'] = team
+
+    # check for bare minimum req query params for portunus API
+    if not params.get('project') or not params.get('stage'):
+        if verbose:
+            secho(msg='No project or stage specified', lvl='error', loader='API')
+
+        return env_vars
 
     r = requests.get(api, params=params, headers={'portunus-jwt': jwt})
 
-    if r.status_code != 200:
+    if not r.ok:
         if verbose:
             try:
                 err = r.json()
@@ -142,19 +152,14 @@ def load_api(api, token, verbose=False):
             env_vars = json.loads(str(gpg.decrypt(env_vars)))
 
         if verbose:
+            msg = f'project={project}, stage={stage} (encrypted={encrypted})'
+            if team:
+                msg = f'team={team}, {msg}'
+
             if not env_vars:
-                secho(
-                    msg=f'No vars loaded for project {project} ({stage})',
-                    lvl='warning',
-                    loader='API'
-                )
-            else:
-                secho(
-                    msg='Project {} (Stage: {}, Encrypted: {})'.format(
-                        project, stage, encrypted),
-                    lvl='debug',
-                    loader='API'
-                )
+                msg = f'No vars found for {msg}'
+
+            secho(msg=msg, lvl='debug', loader='API')
     except Exception as e:
         if verbose:
             secho(msg='API error - {}'.format(e), lvl='error', loader='API')
