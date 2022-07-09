@@ -65,3 +65,22 @@ jobs:
 
       - run: pip install -e .
       - run: print-env --version
+
+  scan-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: npx @eqworks/scan-env --strict
+        env:
+          PORTUNUS_TOKEN: test/stub/token
+
+  commit-watch:
+    runs-on: ubuntu-latest
+    if: contains(github.event_name, 'pull_request') # only run on pull requests
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - run: npx @eqworks/commit-watch -b ${{ github.event.pull_request.base.sha }} -h ${{ github.event.pull_request.head.sha }} -v
