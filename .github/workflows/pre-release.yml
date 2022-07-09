@@ -25,3 +25,10 @@ jobs:
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Generate tag associated release notes
+        if: ${{ success() }}
+        run: npx @eqworks/release notes -v --head ${GITHUB_REF##*/} --github --pattern 'v*b*'
+        env:
+          GITHUB_OWNER: portunus-dev
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
