@@ -1,0 +1,38 @@
+name: PyPi pre-release
+
+on:
+  push:
+    tags:
+      - 'v*b*'  # v1.0.0b1
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.8 # consistent with Pipfile python_version
+
+      - name: Install pypa/build
+        run: python -m pip install build --user
+
+      - name: Build a binary wheel and a source tarball
+        run: python -m build --sdist --wheel --outdir dist/
+
+      - name: Publish distribution 📦 to PyPI
+        if: startsWith(github.ref, 'refs/tags')
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_PUBLISH_TOKEN }}
+
+      - name: Generate tag associated release notes
+        if: ${{ success() }}
+        run: npx @eqworks/release notes -v --head ${GITHUB_REF##*/} --github --pattern 'v*b*'
+        env:
+          GITHUB_OWNER: portunus-dev
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
